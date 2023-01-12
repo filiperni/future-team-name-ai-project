@@ -1,64 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
-	<title id="title_test">hello world</title>
-	<head>
-		<title>KML</title>
-		<link
-			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css"
-			type="text/css"
-		/>
-		<link rel="stylesheet" href="./style.css" type="text/css" />
-		<style></style>
-		<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
-	</head>
 
-	<body>
-		<div id="map" class="map"></div>
-		<div id="popup" class="ol-popup"></div>
-		<div id="info">&nbsp;</div>
-		<!-- create two input objects -->
-		<input type="text" id="lonbox" name="lonbox" />
-		<input type="text" id="lanbox" name="lanbox" />
-		<script type="text/javascript">
-			var osm = new ol.layer.Tile({
-				source: new ol.source.OSM(),
-			});
+<head>
+	<title>KML</title>
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
+	<link rel="stylesheet" href="./style.css" type="text/css" />
+	<style></style>
+	<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+</head>
 
-			//moze na start wziąć teraźniejszą lokalizację
-			var start_coordinates = {
-				x: 18.606624528808595,
-				y: 54.38186473556618,
+<body>
+	<div id="map" class="map"></div>
+	<div id="pointA">
+		Point A:
+		<!-- Point A - lon and lan -->
+		<input type="text" id="lonA" name="lonA">
+		<input type="text" id="latA" name="latA">
+		<!-- clear button-->
+		<button type="button" id="clearA">Clear</button>
+	</div>
+
+	<div id="pointB">
+		Point B:
+		<!-- Point B - lon and lan -->
+		<input type="text" id="lonB" name="lonB">
+		<input type="text" id="latB" name="latB">
+		<!-- clear button-->
+		<button type="button" id="clearB">Clear</button>
+	</div>
+	<div id="path">
+		<!-- create path button-->
+		<button type="button" id="createPath">Create Path</button>
+	</div>
+	<script type="text/javascript">
+		//create random path from pointA to pointB with 10 points saved as lon and lat in array
+		var createRandomPath = function (pointA, pointB, stepsCount) {
+			var path = [];
+			path.push([pointA[0], pointA[1]]);
+			var step = {
+				lon: (pointB[0] - pointA[0]) / stepsCount,
+				lat: (pointB[1] - pointA[1]) / stepsCount
 			};
-			var map = new ol.Map({
-				layers: [osm],
-				target: document.getElementById("map"),
-				view: new ol.View({
-					center: ol.proj.fromLonLat([
-						start_coordinates.x,
-						start_coordinates.y,
-					]),
-					zoom: 12,
-				}),
-			});
+			for (var i = 1; i < stepsCount; i++) {
+				var point = {
+					lon: pointA[0] + i * step.lon + Math.random() * step.lon,
+					lat: pointA[1] + i * step.lat + Math.random() * step.lat
+				};
+				path.push([point.lon, point.lat]);
+			}
+			path.push([pointB[0], pointB[1]]);
+			return path;
+		};
 
-			map.on("singleclick", function (evt) {
-				var lonlat = ol.proj.transform(
-					evt.coordinate,
-					"EPSG:3857",
-					"EPSG:4326"
-				);
-				var x = lonlat[0];
-				var y = lonlat[1];
-				console.log(x, y);
-				fetch(`http://127.0.0.1:8000/?x=${x}&y=${y}`)
-					.then(response => {
-						return response.json();
-					})
-					.then(res => {
-						console.log(res);
-					});
-			});
-		</script>
-	</body>
+		var clearA = document.getElementById('clearA');
+		clearA.addEventListener('click', function () {
+			document.getElementById("lonA").value = "";
+			document.getElementById("latA").value = "";
+		}, false);
+
+		var clearB = document.getElementById('clearB');
+		clearB.addEventListener('click', function () {
+			document.getElementById("lonB").value = "";
+			document.getElementById("latB").value = "";
+		}, false);
+
+		var createPath = document.getElementById('createPath');
+		createPath.addEventListener('click', function () {
+			var pointA = ol.proj.fromLonLat([document.getElementById("lonA").value, document.getElementById("latA").value]);
+			var pointB = ol.proj.fromLonLat([document.getElementById("lonB").value, document.getElementById("latB").value]);
+			var path = createRandomPath(pointA, pointB, 10);
+			var pathLine = new ol.geom.LineString(path);
+			pathFeature.setGeometry(pathLine);
+		}, false);
+
+		var markerA = new ol.Feature({
+			geometry: new ol.geom.Point(ol.proj.fromLonLat([document.getElementById("lonA").value, document.getElementById("latA").value]))
+
+		});
+
+		var markerB = new ol.Feature({
+			geometry: new ol.geom.Point(ol.proj.fromLonLat([document.getElementById("lonB").value, document.getElementById("latB").value]))
+		});
+
+		var vectorSource = new ol.source.Vector({
+			features: [markerA, markerB]
+		});
+
+		var markerVectorLayer = new ol.layer.Vector({
+			source: vectorSource,
+		});
+
+		var markers = new ol.layer.Vector({
+			source: new ol.source.Vector({
+				features: [markerA, markerB]
+			})
+		});
+
+		var iconStyle = new ol.style.Style({
+			image: new ol.style.Icon(({
+				anchor: [0.5, 46],
+				anchorXUnits: 'fraction',
+				anchorYUnits: 'pixels',
+				opacity: 0.75,
+				// example icon
+				src: 'https://openlayers.org/en/v6.5.0/examples/data/icon.png'
+			}))
+		});
+
+		markerA.setStyle(iconStyle);
+		markerB.setStyle(iconStyle);
+
+		var osm = new ol.layer.Tile({
+			source: new ol.source.OSM()
+		});
+
+		var map = new ol.Map({
+			layers: [osm],
+			target: document.getElementById("map"),
+			view: new ol.View({
+				center: ol.proj.fromLonLat([18.606624528808595, 54.38186473556618]),
+				zoom: 12
+			})
+		});
+
+		//create random path from pointA to pointB
+		var pointA = ol.proj.fromLonLat([document.getElementById("lonA").value, document.getElementById("latA").value]);
+		var pointB = ol.proj.fromLonLat([document.getElementById("lonB").value, document.getElementById("latB").value]);
+		var path = createRandomPath(pointA, pointB, 10);
+		var pathLine = new ol.geom.LineString(path);
+
+		var pathFeature = new ol.Feature({
+			geometry: pathLine
+		});
+
+		var pathSource = new ol.source.Vector({
+			features: [pathFeature]
+		});
+
+		var pathLayer = new ol.layer.Vector({
+			source: pathSource
+		});
+
+		var pathStyle = new ol.style.Style({
+			stroke: new ol.style.Stroke({
+				color: 'red',
+				width: 2
+			})
+		});
+
+		pathFeature.setStyle(pathStyle);
+
+		map.addLayer(markerVectorLayer);
+		map.addLayer(pathLayer);
+
+		map.on('singleclick', function (evt) {
+			var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+			if (document.getElementById("lonA").value == "") {
+				document.getElementById("lonA").value = lonlat[0];
+				document.getElementById("latA").value = lonlat[1];
+			} else if (document.getElementById("lonB").value == "") {
+				document.getElementById("lonB").value = lonlat[0];
+				document.getElementById("latB").value = lonlat[1];
+			}
+			// update markerVectorLayer
+			markerA.setGeometry(new ol.geom.Point(ol.proj.fromLonLat([document.getElementById("lonA").value, document.getElementById("latA").value])));
+			markerB.setGeometry(new ol.geom.Point(ol.proj.fromLonLat([document.getElementById("lonB").value, document.getElementById("latB").value])));
+			fetch(`http://127.0.0.1:8000/?x=${x}&y=${y}`)
+				.then(response => {
+					return response.json();
+				})
+				.then(res => {
+					console.log(res);
+				});
+		});
+
+	</script>
+</body>
+
 </html>
