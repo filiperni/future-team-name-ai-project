@@ -38,6 +38,8 @@
 			</div>
 		</div>
 		<script type="text/javascript">
+			var posA = {};
+			var posB = {};
 			//create random path from pointA to pointB with 10 points saved as lon and lat in array
 			var createRandomPath = function (pointA, pointB, stepsCount) {
 				var path = [];
@@ -65,6 +67,9 @@
 				function () {
 					document.getElementById("lonA").value = "";
 					document.getElementById("latA").value = "";
+					posA = {};
+					changePositionTo(markerA, "", "");
+					pathFeature.setGeometry();
 				},
 				false
 			);
@@ -185,8 +190,11 @@
 			map.addLayer(markers);
 			map.addLayer(pathLayer);
 
-			var posA = {};
-			var posB = {};
+			function changePositionTo(object_on_map, x, y) {
+				object_on_map.setGeometry(
+					new ol.geom.Point(ol.proj.fromLonLat([x, y]))
+				);
+			}
 
 			map.on("singleclick", function (evt) {
 				var lonlat = ol.proj.transform(
@@ -204,6 +212,8 @@
 					document.getElementById("latB").value = lonlat[1];
 					posB["x"] = lonlat[0];
 					posB["y"] = lonlat[1];
+				}
+				if (posA["x"] !== undefined && posB["x"] !== undefined) {
 					console.log("fetch");
 					fetch(
 						`http://127.0.0.1:8000/?posAx=${posA["x"]}&posAy=${posA["y"]}&posBx=${posB["x"]}&posBy=${posB["y"]}`
@@ -221,22 +231,8 @@
 
 				console.log(posA, posB);
 				// update markerVectorLayer
-				markerA.setGeometry(
-					new ol.geom.Point(
-						ol.proj.fromLonLat([
-							document.getElementById("lonA").value,
-							document.getElementById("latA").value,
-						])
-					)
-				);
-				markerB.setGeometry(
-					new ol.geom.Point(
-						ol.proj.fromLonLat([
-							document.getElementById("lonB").value,
-							document.getElementById("latB").value,
-						])
-					)
-				);
+				changePositionTo(markerA, posA["x"], posA["y"]);
+				changePositionTo(markerB, posB["x"], posB["y"]);
 			});
 		</script>
 	</body>
