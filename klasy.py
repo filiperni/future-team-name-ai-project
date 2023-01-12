@@ -18,7 +18,7 @@ class Linia:
         self.przystanki_na_linii.append(przystanek)
 
 
-class StopInTrip:
+class StopsInTrip:
     def __init__(self, routeId, stopID):
         self.routeID = routeId
         self.stopID = stopID

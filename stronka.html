@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Future Team name</title>
+		<title>Future Team Name</title>
 		<link
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css"
@@ -14,26 +14,28 @@
 
 	<body>
 		<div id="map" class="map"></div>
-		<div id="pointA">
-			Point A:
-			<!-- Point A - lon and lan -->
-			<input type="text" id="lonA" name="lonA" />
-			<input type="text" id="latA" name="latA" />
-			<!-- clear button-->
-			<button type="button" id="clearA">Clear</button>
-		</div>
+		<div id="input">
+			<div id="pointA">
+				Point A (Start): <br />
+				<!-- Point A - lon and lan -->
+				Longitude: <input type="text" id="lonA" name="lonA" /> Latitude:
+				<input type="text" id="latA" name="latA" />
+				<!-- clear button-->
+				<button type="button" id="clearA">Clear</button>
+			</div>
 
-		<div id="pointB">
-			Point B:
-			<!-- Point B - lon and lan -->
-			<input type="text" id="lonB" name="lonB" />
-			<input type="text" id="latB" name="latB" />
-			<!-- clear button-->
-			<button type="button" id="clearB">Clear</button>
-		</div>
-		<div id="path">
-			<!-- create path button-->
-			<button type="button" id="createPath">Create Path</button>
+			<div id="pointB">
+				Point B (End): <br />
+				<!-- Point B - lon and lan -->
+				Longitude: <input type="text" id="lonB" name="lonB" /> Latitude:
+				<input type="text" id="latB" name="latB" />
+				<!-- clear button-->
+				<button type="button" id="clearB">Clear</button>
+			</div>
+			<div id="path">
+				<!-- create path button-->
+				<button type="button" id="createPath">Show Best Route</button>
+			</div>
 		</div>
 		<script type="text/javascript">
 			//create random path from pointA to pointB with 10 points saved as lon and lat in array
@@ -200,7 +202,6 @@
 					"EPSG:3857",
 					"EPSG:4326"
 				);
-
 				if (document.getElementById("lonA").value == "") {
 					document.getElementById("lonA").value = lonlat[0];
 					document.getElementById("latA").value = lonlat[1];
@@ -211,7 +212,6 @@
 					document.getElementById("latB").value = lonlat[1];
 					posB["x"] = lonlat[0];
 					posB["y"] = lonlat[1];
-					console.log("fetching");
 					fetch(
 						`http://127.0.0.1:8000/?posAx=${posA["x"]}&posAy=${posA["y"]}&posBx=${posB["x"]}&posBy=${posB["y"]}`
 					)
@@ -222,8 +222,7 @@
 						})
 						.then(res => {
 							console.log(res);
-						})
-						.catch(err => console.error(err));
+						});
 				}
 
 				console.log(posA, posB);
