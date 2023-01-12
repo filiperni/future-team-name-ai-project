@@ -46,8 +46,8 @@ def najb_przystanki(start_x, start_y, dest_x, dest_y):
 
     sorted_start_short = sorted_start[0:5]
     sorted_dest_short = sorted_dest[0:5]
-    plot(start, dest, lista_przystankow, sorted_start_short + sorted_dest_short)
+    #plot(start, dest, lista_przystankow, sorted_start_short + sorted_dest_short)
     return sorted_start, sorted_dest
 
 
-najb_przystanki(1, 1, 1, 1)
+# najb_przystanki(1, 1, 1, 1)

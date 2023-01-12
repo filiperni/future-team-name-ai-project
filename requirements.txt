@@ -1,1 +1,5 @@
 fastapi[all]
+matplotlib
+np
+requests
+matplotlib

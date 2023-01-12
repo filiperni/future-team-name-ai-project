@@ -211,6 +211,7 @@
 					document.getElementById("latB").value = lonlat[1];
 					posB["x"] = lonlat[0];
 					posB["y"] = lonlat[1];
+					console.log("fetching");
 					fetch(
 						`http://127.0.0.1:8000/?posAx=${posA["x"]}&posAy=${posA["y"]}&posBx=${posB["x"]}&posBy=${posB["y"]}`
 					)
@@ -221,7 +222,8 @@
 						})
 						.then(res => {
 							console.log(res);
-						});
+						})
+						.catch(err => console.error(err));
 				}
 
 				console.log(posA, posB);
