@@ -1,5 +1,18 @@
 import json
+from fastapi import FastAPI
 
-lista_przystankow = json.load(open('lista_przystankow.json', encoding="utf-8"))
 
-print(lista_przystankow)
+app = FastAPI()
+
+
+@app.get("/")
+async def root():
+
+
+
+    #kod pyhon tutaj
+
+
+
+
+    return {"message": "Hello World"}
