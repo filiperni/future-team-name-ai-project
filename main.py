@@ -20,7 +20,7 @@ async def root(posAx:float=0,posAy:float=0,posBx:float=0,posBy:float=0):
 
     #najblizsze przystanki
     najblizsze_przystanki= get_najb_przystanki(posAx,posAy,posBx,posBy)
-    print(najblizsze_przystanki)
+
     #dok
 
 

@@ -114,14 +114,6 @@
 				),
 			});
 
-			var vectorSource = new ol.source.Vector({
-				features: [markerA, markerB],
-			});
-
-			var markerVectorLayer = new ol.layer.Vector({
-				source: vectorSource,
-			});
-
 			var markers = new ol.layer.Vector({
 				source: new ol.source.Vector({
 					features: [markerA, markerB],
@@ -190,7 +182,7 @@
 
 			pathFeature.setStyle(pathStyle);
 
-			map.addLayer(markerVectorLayer);
+			map.addLayer(markers);
 			map.addLayer(pathLayer);
 
 			var posA = {};
@@ -212,6 +204,7 @@
 					document.getElementById("latB").value = lonlat[1];
 					posB["x"] = lonlat[0];
 					posB["y"] = lonlat[1];
+					console.log("fetch");
 					fetch(
 						`http://127.0.0.1:8000/?posAx=${posA["x"]}&posAy=${posA["y"]}&posBx=${posB["x"]}&posBy=${posB["y"]}`
 					)
@@ -222,7 +215,8 @@
 						})
 						.then(res => {
 							console.log(res);
-						});
+						})
+						.catch(err => console.error(err));
 				}
 
 				console.log(posA, posB);
