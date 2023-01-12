@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>KML</title>
+		<title>Future Team name</title>
 		<link
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css"
@@ -77,24 +77,22 @@
 				false
 			);
 
+			function createPathFunction() {
+				var pointA = ol.proj.fromLonLat([
+					document.getElementById("lonA").value,
+					document.getElementById("latA").value,
+				]);
+				var pointB = ol.proj.fromLonLat([
+					document.getElementById("lonB").value,
+					document.getElementById("latB").value,
+				]);
+				var path = createRandomPath(pointA, pointB, 10);
+				var pathLine = new ol.geom.LineString(path);
+				pathFeature.setGeometry(pathLine);
+			}
+
 			var createPath = document.getElementById("createPath");
-			createPath.addEventListener(
-				"click",
-				function () {
-					var pointA = ol.proj.fromLonLat([
-						document.getElementById("lonA").value,
-						document.getElementById("latA").value,
-					]);
-					var pointB = ol.proj.fromLonLat([
-						document.getElementById("lonB").value,
-						document.getElementById("latB").value,
-					]);
-					var path = createRandomPath(pointA, pointB, 10);
-					var pathLine = new ol.geom.LineString(path);
-					pathFeature.setGeometry(pathLine);
-				},
-				false
-			);
+			createPath.addEventListener("click", createPathFunction, false);
 
 			var markerA = new ol.Feature({
 				geometry: new ol.geom.Point(
@@ -218,6 +216,7 @@
 					)
 						.then(response => {
 							console.log("fetch result");
+							createPathFunction();
 							return response.json();
 						})
 						.then(res => {
