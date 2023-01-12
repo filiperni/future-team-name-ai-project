@@ -1,6 +1,6 @@
 import json
 from fastapi import FastAPI
-from najlblizsze_przystanki import najb_przystanki as get_najb_przystanki
+from funkcje import najb_przystanki as get_najb_przystanki
 
 
 app = FastAPI()
