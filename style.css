@@ -7,39 +7,35 @@ body {
 	height: 800px;
 }
 
-.ol-popup {
-	position: absolute;
-	background-color: white;
-	-webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-	filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-	padding: 15px;
-	border-radius: 10px;
-	bottom: 12px;
-	left: -50px;
-	min-width: 160px;
+/* create style for div input */
+#input {
+	background-color: #fff;
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
 }
 
-.ol-popup::after,
-.ol-popup::before {
-	top: 100%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
+/* center pointA div within input div*/
+#pointA,
+#pointB,
+#path,
+#createPath {
+	margin: 0 auto;
+	width: 50%;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
-.ol-popup::after {
-	border-top-color: white;
-	border-width: 10px;
-	left: 48px;
-	margin-left: -10px;
+/* center button horizontally in createPath div */
+#pointA,
+#pointB {
+	margin: 0 auto;
+	width: 50%;
+	padding-left: 25%;
 }
 
-.ol-popup::before {
-	border-top-color: #cccccc;
-	border-width: 11px;
-	left: 48px;
-	margin-left: -11px;
+#path {
+	margin: 0 auto;
+	width: 50%;
+	padding-left: 30%;
 }
