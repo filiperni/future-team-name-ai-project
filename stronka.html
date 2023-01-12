@@ -80,6 +80,9 @@
 				function () {
 					document.getElementById("lonB").value = "";
 					document.getElementById("latB").value = "";
+					posB = {};
+					changePositionTo(markerB, "", "");
+					pathFeature.setGeometry();
 				},
 				false
 			);
