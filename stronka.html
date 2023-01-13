@@ -67,6 +67,10 @@
 				path.push([pointB[0], pointB[1]]);
 				return path;
 			};
+			const svg_pin =
+				'<svg width="24" height="24" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">' +
+				'<path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12 ,2Z" fill="firebrick"></path>' +
+				"</svg>";
 
 			var clearA = document.getElementById("clearA");
 			clearA.addEventListener(
@@ -104,8 +108,19 @@
 					document.getElementById("latB").value,
 				]);
 				var path = createRandomPath(pointA, pointB, 10);
-				var pathLine = new ol.geom.LineString(path);
-				pathFeature.setGeometry(pathLine);
+				console.log("path", path);
+				var startingWalkingPathCoordinates = new ol.geom.LineString([
+					path[0],
+					path[1],
+				]);
+				var endingWalkingPathCoordinates = new ol.geom.LineString([
+					path[path.length - 1],
+					path[path.length - 2],
+				]);
+				var redPathLine = new ol.geom.LineString(path);
+				pathFeature.setGeometry(redPathLine);
+				endingWalkingPath.setGeometry(endingWalkingPathCoordinates);
+				walkingPath.setGeometry(startingWalkingPathCoordinates);
 			}
 
 			var createPath = document.getElementById("createPath");
@@ -137,12 +152,12 @@
 
 			var iconStyle = new ol.style.Style({
 				image: new ol.style.Icon({
-					anchor: [0.5, 46],
+					anchor: [0.5, 0.9],
 					anchorXUnits: "fraction",
-					anchorYUnits: "pixels",
-					opacity: 0.75,
-					// example icon
-					src: "https://openlayers.org/en/v6.5.0/examples/data/icon.png",
+					anchorYUnits: "fraction",
+					opacity: 1,
+					src: "data:image/svg+xml;utf8," + svg_pin,
+					scale: 1.5,
 				}),
 			});
 
@@ -199,6 +214,50 @@
 
 			map.addLayer(markers);
 			map.addLayer(pathLayer);
+
+			var walkingPath = new ol.Feature({
+				geometry: pathLine,
+			});
+
+			var walkingPathSource = new ol.source.Vector({
+				features: [walkingPath],
+			});
+
+			var walkingPathLayer = new ol.layer.Vector({
+				source: walkingPathSource,
+			});
+
+			var walkingPathStyle = new ol.style.Style({
+				stroke: new ol.style.Stroke({
+					color: "blue",
+					width: 2,
+				}),
+			});
+
+			walkingPath.setStyle(walkingPathStyle);
+			map.addLayer(walkingPathLayer);
+
+			var endingWalkingPath = new ol.Feature({
+				geometry: pathLine,
+			});
+
+			var endingWalkingPathSource = new ol.source.Vector({
+				features: [endingWalkingPath],
+			});
+
+			var endingWalkingPathLayer = new ol.layer.Vector({
+				source: endingWalkingPathSource,
+			});
+
+			var endingWalkingPathStyle = new ol.style.Style({
+				stroke: new ol.style.Stroke({
+					color: "blue",
+					width: 2,
+				}),
+			});
+
+			endingWalkingPath.setStyle(endingWalkingPathStyle);
+			map.addLayer(endingWalkingPathLayer);
 
 			function changePositionTo(object_on_map, x, y) {
 				object_on_map.setGeometry(
