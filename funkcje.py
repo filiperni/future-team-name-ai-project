@@ -22,6 +22,15 @@ def plot(list1, list2=None, A=None, B=None, title=''):
     plt.show()
 
 
+def najb_przystanki_2(lista_przystankow, start_x=18.5869, start_y=54.4213, dest_x=18.7121, dest_y=54.3621):
+    start = [start_x, start_y]
+    dest = [dest_x, dest_y]
+    for p in lista_przystankow:
+        p.dist_to_start = np.sqrt(np.power(p.stopLon - start[0], 2) + np.power(p.stopLat - start[1], 2))
+        p.dist_to_dest = np.sqrt(np.power(p.stopLon - dest[0], 2) + np.power(p.stopLat - dest[1], 2))
+    return lista_przystankow
+
+
 def najb_przystanki(start_x, start_y, dest_x, dest_y):
     url_lista_przystankow = "https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json"
     try:
@@ -89,9 +98,9 @@ def generate_lista_linii():
     with open('lista_stopsInTrip.json', 'w') as out_file:
         json.dump(lista_stopsInTrip_json.json(), out_file)
 
-    lista_przystankow_dict = json.load(open('data/lista_przystankow.json', encoding="utf-8"))
-    lista_linii_dict = json.load(open('data/lista_linii.json', encoding="utf-8"))
-    lista_stopsInTrip_dict = json.load(open('data/stopsintrip.json', encoding="utf-8"))
+    lista_przystankow_dict = json.load(open('lista_przystankow.json', encoding="utf-8"))
+    lista_linii_dict = json.load(open('lista_linii.json', encoding="utf-8"))
+    lista_stopsInTrip_dict = json.load(open('lista_stopsintrip.json', encoding="utf-8"))
 
     lista_linii = [Linia(line["routeId"], line["routeShortName"], line["routeType"])
                    for line in lista_linii_dict["2023-01-13"]["routes"]]
@@ -159,21 +168,18 @@ def znajdz_linie(start=(18.5869, 54.4213), dest=(18.7121, 54.3621)):
                     end_it = True
                     break
 
-    potencjalne_linie_start = potencjalne_linie_start[0:2]
-    potencjalne_linie_dest = potencjalne_linie_dest[0:2]
+    # potencjalne_linie_start = potencjalne_linie_start[0:2]
+    # potencjalne_linie_dest = potencjalne_linie_dest[0:2]
 
-    potencjalne_linie = []
-    for pot_lin_dest in potencjalne_linie_dest:
-        for pot_lin_start in potencjalne_linie_start:
-            if pot_lin_start.routeID == pot_lin_dest.routeID:
-                potencjalne_linie.append(pot_lin_dest)
-
+    potencjalne_linie = [pot_lin_dest for pot_lin_dest in potencjalne_linie_dest for pot_lin_start in potencjalne_linie_start if pot_lin_start.routeID == pot_lin_dest.routeID]
+    # for pot_lin_dest in potencjalne_linie_dest:
+    #     for pot_lin_start in potencjalne_linie_start:
+    #         if pot_lin_start.routeID == pot_lin_dest.routeID:
+    #             potencjalne_linie.append(pot_lin_dest)
     # for linia in potencjalne_linie:
-    #     funkcje.plot(lista_przystankow, linia.przystanki_na_linii, start, dest, f'{linia.routeShortName}')
+    #     plot(lista_przystankow, linia.przystanki_na_linii, start, dest, f'{linia.routeShortName}')
 
-    wsp = []
-    for przystanek in potencjalne_linie[0].przystanki_na_linii:
-        wsp.append([przystanek.stopLat, przystanek.stopLon])
-
-    return wsp
-
+    list_xd = najb_przystanki_2(potencjalne_linie[0].przystanki_na_linii, *start, *dest)
+    wsp = [[przystanek.stopLat, przystanek.stopLon] for przystanek in potencjalne_linie[0].przystanki_na_linii]
+    dist = [[przystanek.dist_to_start, przystanek.dist_to_dest] for przystanek in list_xd]
+    return wsp, dist

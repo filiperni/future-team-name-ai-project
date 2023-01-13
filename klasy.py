@@ -23,6 +23,7 @@ class StopsInTrip:
     def __init__(self, routeId, stopID):
         self.routeID = routeId
         self.stopID = stopID
+        self.stopSequence = 54.4094477911959
 
 
 class GpsPosition:
@@ -30,5 +31,4 @@ class GpsPosition:
         self.routeShortName = routeShortName
         self.lat = lat
         self.lon = lon
-
 
