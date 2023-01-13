@@ -34,7 +34,7 @@ def najb_przystanki(start_x, start_y, dest_x, dest_y):
 
     lista_przystankow_dict = json.load(open('lista_przystankow.json', encoding="utf-8"))
     lista_przystankow = [Przystanek(stop["stopId"], stop["stopName"], stop["stopLon"], stop["stopLat"]) for stop in
-                         lista_przystankow_dict["2023-01-12"]["stops"]]
+                         lista_przystankow_dict["2023-01-13"]["stops"]]
 
     list_stopNames = []
     new_list = []
@@ -94,11 +94,11 @@ def generate_lista_linii():
     lista_stopsInTrip_dict = json.load(open('data/stopsintrip.json', encoding="utf-8"))
 
     lista_linii = [Linia(line["routeId"], line["routeShortName"], line["routeType"])
-                   for line in lista_linii_dict["2023-01-12"]["routes"]]
+                   for line in lista_linii_dict["2023-01-13"]["routes"]]
     lista_przystankow = [Przystanek(stop["stopId"], stop["stopName"], stop["stopLon"], stop["stopLat"])
-                         for stop in lista_przystankow_dict["2023-01-12"]["stops"]]
+                         for stop in lista_przystankow_dict["2023-01-13"]["stops"]]
     lista_stopsInTrip = [StopsInTrip(elem['routeId'], elem['stopId'])
-                         for elem in lista_stopsInTrip_dict["2023-01-12"]["stopsInTrip"]]
+                         for elem in lista_stopsInTrip_dict["2023-01-13"]["stopsInTrip"]]
 
     list_stopNames = []
     new_list = []
@@ -118,7 +118,7 @@ def generate_lista_linii():
 def generate_lista_przystankow():
     lista_przystankow_dict = json.load(open('lista_przystankow.json', encoding="utf-8"))
     lista_przystankow = [Przystanek(stop["stopId"], stop["stopName"], stop["stopLon"], stop["stopLat"]) for stop in
-                         lista_przystankow_dict["2023-01-12"]["stops"]]
+                         lista_przystankow_dict["2023-01-13"]["stops"]]
     list_stopNames = []
     new_list = []
     for przystanek in lista_przystankow:
@@ -173,7 +173,7 @@ def znajdz_linie(start=(18.5869, 54.4213), dest=(18.7121, 54.3621)):
 
     wsp = []
     for przystanek in potencjalne_linie[0].przystanki_na_linii:
-        wsp.append((przystanek.stopLat, przystanek.stopLon))
+        wsp.append([przystanek.stopLat, przystanek.stopLon])
 
     return wsp
 

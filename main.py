@@ -17,7 +17,7 @@ async def root(posAx:float=0,posAy:float=0,posBx:float=0,posBy:float=0):
     
     
     wynik = znajdz_linie()
-    print(wynik)
+
 
     #najblizsze przystanki
     #najblizsze_przystanki= get_najb_przystanki(posAx,posAy,posBx,posBy)
@@ -26,4 +26,4 @@ async def root(posAx:float=0,posAy:float=0,posBx:float=0,posBy:float=0):
 
 
 
-    return {"message": "Hello World","najblizsze_przystanki":wynik}
+    return {"message": "Hello World","najblizsze_przystanki":"wynik"}
