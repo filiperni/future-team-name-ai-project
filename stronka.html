@@ -259,6 +259,44 @@
 			endingWalkingPath.setStyle(endingWalkingPathStyle);
 			map.addLayer(endingWalkingPathLayer);
 
+			var translateA = new ol.interaction.Translate({
+				features: new ol.Collection([markerA]),
+			});
+
+			var translateB = new ol.interaction.Translate({
+				features: new ol.Collection([markerB]),
+			});
+
+			map.addInteraction(translateA);
+			map.addInteraction(translateB);
+
+			translateA.on("translateend", HandleMapIconDragA);
+			translateB.on("translateend", HandleMapIconDragB);
+
+			function HandleMapIconDragA(e) {
+				var p = e.features.getArray()[0].getGeometry().getCoordinates();
+				p = ol.proj.transform(p, "EPSG:3857", "EPSG:4326");
+				// p now holds the [ lon, lat ] value of the dragged point icon
+				posA["x"] = p[0];
+				posA["y"] = p[1];
+				document.getElementById("lonA").value = p[0];
+				document.getElementById("latA").value = p[1];
+				console.log(posA, p);
+				updateRoute();
+			}
+
+			function HandleMapIconDragB(e) {
+				var p = e.features.getArray()[0].getGeometry().getCoordinates();
+				p = ol.proj.transform(p, "EPSG:3857", "EPSG:4326");
+				// p now holds the [ lon, lat ] value of the dragged point icon
+				posB["x"] = p[0];
+				posB["y"] = p[1];
+				document.getElementById("lonB").value = p[0];
+				document.getElementById("latB").value = p[1];
+				console.log(posB, p);
+				updateRoute();
+			}
+
 			function changePositionTo(object_on_map, x, y) {
 				object_on_map.setGeometry(
 					new ol.geom.Point(ol.proj.fromLonLat([x, y]))
@@ -272,6 +310,31 @@
 			function stopLoadingAnimation() {
 				document.getElementById("loading-animation").style.display =
 					"none";
+			}
+			function updateRoute() {
+				if (posA["x"] !== undefined && posB["x"] !== undefined) {
+					console.log("fetch");
+					startLoadingAnimation();
+					pathFeature.setGeometry();
+					walkingPath.setGeometry();
+					endingWalkingPath();
+					fetch(
+						`http://127.0.0.1:8000/?posAx=${posA["x"]}&posAy=${posA["y"]}&posBx=${posB["x"]}&posBy=${posB["y"]}`
+					)
+						.then(response => {
+							stopLoadingAnimation();
+							console.log("fetch result");
+							createPathFunction();
+							return response.json();
+						})
+						.then(res => {
+							console.log(res);
+						})
+						.catch(err => {
+							stopLoadingAnimation();
+							console.error(err);
+						});
+				}
 			}
 
 			map.on("singleclick", function (evt) {
@@ -291,27 +354,7 @@
 					posB["x"] = lonlat[0];
 					posB["y"] = lonlat[1];
 				}
-				if (posA["x"] !== undefined && posB["x"] !== undefined) {
-					console.log("fetch");
-					startLoadingAnimation();
-					pathFeature.setGeometry();
-					fetch(
-						`http://127.0.0.1:8000/?posAx=${posA["x"]}&posAy=${posA["y"]}&posBx=${posB["x"]}&posBy=${posB["y"]}`
-					)
-						.then(response => {
-							stopLoadingAnimation();
-							console.log("fetch result");
-							createPathFunction();
-							return response.json();
-						})
-						.then(res => {
-							console.log(res);
-						})
-						.catch(err => {
-							stopLoadingAnimation();
-							console.error(err);
-						});
-				}
+				updateRoute();
 
 				console.log(posA, posB);
 				// update markerVectorLayer
