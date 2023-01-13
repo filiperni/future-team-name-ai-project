@@ -27,4 +27,4 @@ async def root(posAx:float=0,posAy:float=0,posBx:float=0,posBy:float=0):
 
 
 
-    return {"message": "Hello World","najblizsze_przystanki":wynik}
+    return {"message": "Hello World","najblizsze_przystanki":wynik.wsp}
