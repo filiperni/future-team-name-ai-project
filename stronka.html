@@ -173,6 +173,7 @@
 				[54.39604, 18.60378],
 				[54.40824, 18.59111],
 			];
+			var odleglosci_do_przyst_a_b = [];
 			//create random path from pointA to pointB with 10 points saved as lon and lat in array
 			var createRandomPath = function (pointA, pointB, stepsCount) {
 				var path = [];
@@ -462,10 +463,26 @@
 					"najblizsze_przystanki_koordynaty",
 					najblizsze_przystanki_koordynaty
 				);
-
+				var i = 0;
+				const array = odleglosci_do_przyst_a_b.map(odleglosc => {
+					return odleglosc[0];
+				});
+				var min = Math.min(...array);
+				console.log(
+					"odleglosci_do_przyst_a_b[i][0]",
+					odleglosci_do_przyst_a_b[i][0]
+				);
+				console.log(
+					"Math.min(odleglosci_do_przyst_a_b.map(odleglosc => {return odleglosc[0];}))",
+					Math.min(...array)
+				);
+				console.log(
+					"odleglosci_do_przyst_a_b.map(odleglosc => {return odleglosc[0];})",
+					odleglosci_do_przyst_a_b.map(odleglosc => {
+						return odleglosc[0];
+					})
+				);
 				najblizsze_przystanki_koordynaty.forEach(koordynaty => {
-					console.log("printing ", koordynaty);
-
 					var point = new ol.Feature({
 						geometry: new ol.geom.Point(
 							ol.proj.fromLonLat([koordynaty[1], koordynaty[0]])
@@ -479,6 +496,26 @@
 							features: [point],
 						}),
 					});
+
+					if (odleglosci_do_przyst_a_b[i][0] === min) {
+						console.log("adding a walk path");
+						console.log(koordynaty);
+						// ol.proj.fromLonLat([
+						// 	document.getElementById("lonA").value,
+						// 	document.getElementById("latA").value,
+						// ]);
+						// var startingWalkingPathCoordinates =
+						// 	new ol.geom.LineString(
+						// 		ol.proj.fromLonLat([
+						// 			koordynaty[1],
+						// 			koordynaty[0],
+						// 		]),
+						// 		ol.proj.fromLonLat([posA["x"], posA["y"]])
+						// 	);
+
+						// walkingPath.setGeometry(startingWalkingPathCoordinates);
+					}
+					i += 1;
 					map.addLayer(layer);
 				});
 				console.log(points);
@@ -531,6 +568,9 @@
 						.then(res => {
 							najblizsze_przystanki_koordynaty =
 								res.najblizsze_przystanki;
+							odleglosci_do_przyst_a_b =
+								res.odleglosci_do_przyst_a_b;
+
 							createPathFunction();
 
 							console.log(res);
