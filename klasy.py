@@ -1,8 +1,9 @@
 class Przystanek:
-    def __init__(self, stopId, stopLon, stopLat):
+    def __init__(self, stopId, stopName, stopLon, stopLat):
         self.stopId = stopId
         self.stopLon = stopLon
         self.stopLat = stopLat
+        self.stopName = stopName
         self.dist_to_start = 0
         self.dist_to_dest = 0
 
@@ -29,4 +30,5 @@ class GpsPosition:
         self.routeShortName = routeShortName
         self.lat = lat
         self.lon = lon
+
 
