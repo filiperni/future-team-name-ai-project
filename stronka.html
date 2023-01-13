@@ -43,10 +43,136 @@
 				<button type="button" id="createPath">Show Best Route</button>
 			</div>
 		</div>
+		<button id="test_button">test</button>
 
 		<script type="text/javascript">
 			var posA = {};
 			var posB = {};
+			var najblizsze_przystanki_koordynaty = [
+				[54.3506, 18.56332],
+				[54.36552, 18.58893],
+				[54.4037, 18.61191],
+				[54.35022, 18.55494],
+				[54.41053, 18.60316],
+				[54.38697, 18.59879],
+				[54.36552, 18.58893],
+				[54.37443, 18.60542],
+				[54.36067, 18.58955],
+				[54.37031, 18.59707],
+				[54.38299, 18.59889],
+				[54.39722, 18.62155],
+				[54.3893, 18.59434],
+				[54.35322, 18.55003],
+				[54.41114, 18.57221],
+				[54.35322, 18.55003],
+				[54.38692, 18.60111],
+				[54.40875, 18.5865],
+				[54.35837, 18.58693],
+				[54.37443, 18.60542],
+				[54.37785, 18.60664],
+				[54.36787, 18.59324],
+				[54.35837, 18.58693],
+				[54.39604, 18.60378],
+				[54.35022, 18.55494],
+				[54.41114, 18.57221],
+				[54.35322, 18.55003],
+				[54.35022, 18.55494],
+				[54.40943, 18.57895],
+				[54.39722, 18.62155],
+				[54.35837, 18.58693],
+				[54.41053, 18.60316],
+				[54.35574, 18.57814],
+				[54.39232, 18.59828],
+				[54.35574, 18.57814],
+				[54.40677, 18.6165],
+				[54.40886, 18.59432],
+				[54.37031, 18.59707],
+				[54.40943, 18.57895],
+				[54.35072, 18.57004],
+				[54.35322, 18.55003],
+				[54.39722, 18.62155],
+				[54.35072, 18.57004],
+				[54.40943, 18.57895],
+				[54.36179, 18.59477],
+				[54.36067, 18.58955],
+				[54.36179, 18.59477],
+				[54.36552, 18.58893],
+				[54.40886, 18.59432],
+				[54.34946, 18.55247],
+				[54.35837, 18.58693],
+				[54.35022, 18.55494],
+				[54.35763, 18.58283],
+				[54.40824, 18.59111],
+				[54.35763, 18.58283],
+				[54.40126, 18.62203],
+				[54.38536, 18.60317],
+				[54.37785, 18.60664],
+				[54.40875, 18.5865],
+				[54.40886, 18.59432],
+				[54.38886, 18.60785],
+				[54.37785, 18.60664],
+				[54.40126, 18.62203],
+				[54.35574, 18.57814],
+				[54.37031, 18.59707],
+				[54.36067, 18.58955],
+				[54.39312, 18.60011],
+				[54.35322, 18.55003],
+				[54.36787, 18.59324],
+				[54.3506, 18.56332],
+				[54.37785, 18.60664],
+				[54.35282, 18.57645],
+				[54.40677, 18.6165],
+				[54.41114, 18.57221],
+				[54.36067, 18.58955],
+				[54.38697, 18.59879],
+				[54.35282, 18.57645],
+				[54.36787, 18.59324],
+				[54.35322, 18.55003],
+				[54.38692, 18.60111],
+				[54.37785, 18.60664],
+				[54.41053, 18.60316],
+				[54.41114, 18.57221],
+				[54.36787, 18.59324],
+				[54.41114, 18.57221],
+				[54.39312, 18.60011],
+				[54.38886, 18.60785],
+				[54.37443, 18.60542],
+				[54.37785, 18.60664],
+				[54.34946, 18.55247],
+				[54.38536, 18.60317],
+				[54.4037, 18.61191],
+				[54.35072, 18.57004],
+				[54.36787, 18.59324],
+				[54.37031, 18.59707],
+				[54.35282, 18.57645],
+				[54.39722, 18.62155],
+				[54.35837, 18.58693],
+				[54.35322, 18.55003],
+				[54.36552, 18.58893],
+				[54.38886, 18.60785],
+				[54.38536, 18.60317],
+				[54.4037, 18.61191],
+				[54.35322, 18.55003],
+				[54.39312, 18.60011],
+				[54.39722, 18.62155],
+				[54.37031, 18.59707],
+				[54.39232, 18.59828],
+				[54.35022, 18.55494],
+				[54.34946, 18.55247],
+				[54.35574, 18.57814],
+				[54.3893, 18.59434],
+				[54.35574, 18.57814],
+				[54.36067, 18.58955],
+				[54.3506, 18.56332],
+				[54.38692, 18.60111],
+				[54.35763, 18.58283],
+				[54.36552, 18.58893],
+				[54.36179, 18.59477],
+				[54.39722, 18.62155],
+				[54.39604, 18.60378],
+				[54.39604, 18.60378],
+				[54.40824, 18.59111],
+			];
 			//create random path from pointA to pointB with 10 points saved as lon and lat in array
 			var createRandomPath = function (pointA, pointB, stepsCount) {
 				var path = [];
@@ -98,31 +224,6 @@
 				false
 			);
 
-			function createPathFunction() {
-				var pointA = ol.proj.fromLonLat([
-					document.getElementById("lonA").value,
-					document.getElementById("latA").value,
-				]);
-				var pointB = ol.proj.fromLonLat([
-					document.getElementById("lonB").value,
-					document.getElementById("latB").value,
-				]);
-				var path = createRandomPath(pointA, pointB, 10);
-				console.log("path", path);
-				var startingWalkingPathCoordinates = new ol.geom.LineString([
-					path[0],
-					path[1],
-				]);
-				var endingWalkingPathCoordinates = new ol.geom.LineString([
-					path[path.length - 1],
-					path[path.length - 2],
-				]);
-				var redPathLine = new ol.geom.LineString(path);
-				pathFeature.setGeometry(redPathLine);
-				endingWalkingPath.setGeometry(endingWalkingPathCoordinates);
-				walkingPath.setGeometry(startingWalkingPathCoordinates);
-			}
-
 			var createPath = document.getElementById("createPath");
 			createPath.addEventListener("click", createPathFunction, false);
 
@@ -157,6 +258,19 @@
 					anchorYUnits: "fraction",
 					opacity: 1,
 					src: "data:image/svg+xml;utf8," + svg_pin,
+					scale: 1.5,
+				}),
+			});
+
+			var dotStyle = new ol.style.Style({
+				image: new ol.style.Icon({
+					anchor: [0.5, 0.9],
+					anchorXUnits: "fraction",
+					anchorYUnits: "fraction",
+					opacity: 1,
+					src:
+						"data:image/svg+xml;utf8," +
+						'<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="5" /></svg>',
 					scale: 1.5,
 				}),
 			});
@@ -311,6 +425,91 @@
 				document.getElementById("loading-animation").style.display =
 					"none";
 			}
+			var i = 0;
+			document
+				.getElementById("test_button")
+				.addEventListener("click", function () {
+					console.log("click");
+					const koordynaty = najblizsze_przystanki_koordynaty[i];
+					console.log(koordynaty);
+					var point = new ol.Feature({
+						geometry: new ol.geom.Point(
+							ol.proj.fromLonLat([koordynaty[1], koordynaty[0]])
+						),
+					});
+					point.setStyle(dotStyle);
+
+					const layer = new ol.layer.Vector({
+						source: new ol.source.Vector({
+							features: [point],
+						}),
+					});
+					map.addLayer(layer);
+
+					i += 1;
+				});
+			var points = [];
+			function createPathFunction() {
+				var pointA = ol.proj.fromLonLat([
+					document.getElementById("lonA").value,
+					document.getElementById("latA").value,
+				]);
+				var pointB = ol.proj.fromLonLat([
+					document.getElementById("lonB").value,
+					document.getElementById("latB").value,
+				]);
+				console.log(
+					"najblizsze_przystanki_koordynaty",
+					najblizsze_przystanki_koordynaty
+				);
+
+				najblizsze_przystanki_koordynaty.forEach(koordynaty => {
+					console.log("printing ", koordynaty);
+
+					var point = new ol.Feature({
+						geometry: new ol.geom.Point(
+							ol.proj.fromLonLat([koordynaty[1], koordynaty[0]])
+						),
+					});
+					point.setStyle(dotStyle);
+
+					points.push(point);
+					const layer = new ol.layer.Vector({
+						source: new ol.source.Vector({
+							features: [point],
+						}),
+					});
+					map.addLayer(layer);
+				});
+				console.log(points);
+
+				// map.addLayer(
+				// 	new ol.layer.Vector({
+				// 		source: new ol.source.Vector({
+				// 			features: points,
+				// 		}),
+				// 	})
+				// );
+
+				// var path = najblizsze_przystanki_koordynaty.map(koordynaty => {
+				// 	return ol.proj.fromLonLat([koordynaty[1], koordynaty[0]]);
+				// });
+
+				// console.log("path", path);
+				// var startingWalkingPathCoordinates = new ol.geom.LineString([
+				// 	path[0],
+				// 	path[1],
+				// ]);
+				// var endingWalkingPathCoordinates = new ol.geom.LineString([
+				// 	path[path.length - 1],
+				// 	path[path.length - 2],
+				// ]);
+				// var redPathLine = new ol.geom.LineString(path);
+				// pathFeature.setGeometry(redPathLine);
+				// endingWalkingPath.setGeometry(endingWalkingPathCoordinates);
+				// walkingPath.setGeometry(startingWalkingPathCoordinates);
+			}
+
 			function updateRoute() {
 				if (posA["x"] !== undefined && posB["x"] !== undefined) {
 					console.log("fetch");
@@ -318,26 +517,36 @@
 					pathFeature.setGeometry();
 					walkingPath.setGeometry();
 					endingWalkingPath.setGeometry();
+					points.forEach(point => {
+						point.setGeometry();
+					});
 					fetch(
 						`http://127.0.0.1:8000/?posAx=${posA["x"]}&posAy=${posA["y"]}&posBx=${posB["x"]}&posBy=${posB["y"]}`
 					)
 						.then(response => {
 							stopLoadingAnimation();
 							console.log("fetch result");
-							createPathFunction();
 							return response.json();
 						})
 						.then(res => {
+							najblizsze_przystanki_koordynaty =
+								res.najblizsze_przystanki;
+							createPathFunction();
+
 							console.log(res);
 						})
 						.catch(err => {
 							stopLoadingAnimation();
+							alert(
+								"sprobuj jeszcze raz, ewentualnie zalecamy spacer :)"
+							);
 							console.error(err);
 						});
 				}
 			}
 
 			map.on("singleclick", function (evt) {
+				console.log(evt.coordinate);
 				var lonlat = ol.proj.transform(
 					evt.coordinate,
 					"EPSG:3857",

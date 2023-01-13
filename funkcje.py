@@ -89,9 +89,9 @@ def generate_lista_linii():
     with open('lista_stopsInTrip.json', 'w') as out_file:
         json.dump(lista_stopsInTrip_json.json(), out_file)
 
-    lista_przystankow_dict = json.load(open('data/lista_przystankow.json', encoding="utf-8"))
-    lista_linii_dict = json.load(open('data/lista_linii.json', encoding="utf-8"))
-    lista_stopsInTrip_dict = json.load(open('data/stopsintrip.json', encoding="utf-8"))
+    lista_przystankow_dict = json.load(open('lista_przystankow.json', encoding="utf-8"))
+    lista_linii_dict = json.load(open('lista_linii.json', encoding="utf-8"))
+    lista_stopsInTrip_dict = json.load(open('lista_stopsintrip.json', encoding="utf-8"))
 
     lista_linii = [Linia(line["routeId"], line["routeShortName"], line["routeType"])
                    for line in lista_linii_dict["2023-01-13"]["routes"]]
@@ -159,8 +159,8 @@ def znajdz_linie(start=(18.5869, 54.4213), dest=(18.7121, 54.3621)):
                     end_it = True
                     break
 
-    potencjalne_linie_start = potencjalne_linie_start[0:2]
-    potencjalne_linie_dest = potencjalne_linie_dest[0:2]
+    # potencjalne_linie_start = potencjalne_linie_start[0:2]
+    # potencjalne_linie_dest = potencjalne_linie_dest[0:2]
 
     potencjalne_linie = []
     for pot_lin_dest in potencjalne_linie_dest:
@@ -169,11 +169,9 @@ def znajdz_linie(start=(18.5869, 54.4213), dest=(18.7121, 54.3621)):
                 potencjalne_linie.append(pot_lin_dest)
 
     # for linia in potencjalne_linie:
-    #     funkcje.plot(lista_przystankow, linia.przystanki_na_linii, start, dest, f'{linia.routeShortName}')
-
+    #plot(lista_przystankow, linia.przystanki_na_linii, start, dest, f'{linia.routeShortName}')
     wsp = []
     for przystanek in potencjalne_linie[0].przystanki_na_linii:
         wsp.append([przystanek.stopLat, przystanek.stopLon])
 
     return wsp
-
