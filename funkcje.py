@@ -171,4 +171,9 @@ def znajdz_linie(start=(18.5869, 54.4213), dest=(18.7121, 54.3621)):
     # for linia in potencjalne_linie:
     #     funkcje.plot(lista_przystankow, linia.przystanki_na_linii, start, dest, f'{linia.routeShortName}')
 
-    return potencjalne_linie
+    wsp = []
+    for przystanek in potencjalne_linie[0].przystanki_na_linii:
+        wsp.append((przystanek.stopLat, przystanek.stopLon))
+
+    return wsp
+
