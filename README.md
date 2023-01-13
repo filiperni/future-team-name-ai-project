@@ -1,5 +1,8 @@
 # future-team-name-ai-project
 
+git clone https://github.com/filiperni/future-team-name-ai-project
+
+
 Hackathon ai project
 
 najlepiej otworzyć na macOS'sie
@@ -9,13 +12,13 @@ Wyłączyć Cors w przeglądarce żeby appka działała
 
 otworzyć folder z projektem w terminalu
 
-python3 venv .venv
+python3 -m venv .venv
 
 source .venv/bin/activate
 
-Pip install –upgrade pip
+pip install --upgrade pip
 
-Pip install -r requirements.txt
+pip install -r requirements.txt
 
 uvicorn main:app --reload --timeout-keep-alive 120
 
