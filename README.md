@@ -28,7 +28,4 @@ pip install -r requirements.txt
 ```bash
 uvicorn main:app --reload --timeout-keep-alive 120
 ```
-8. Uruchomić aplikację w przeglądarce:
-```bash
-otworzyć plik stronka.html w przeglądarce
-```
+8. Uruchomić aplikację w przeglądarce uruchamiając plik stronja.html
